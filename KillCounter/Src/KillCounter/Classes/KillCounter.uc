@@ -5,10 +5,12 @@ var config bool neverShowActiveEnemyCount;
 var config bool alwaysShowEnemyTotal;
 var config bool showRemainingInsteadOfTotal;
 var config bool includeTurrets;
+var config bool onlyShowInitialEnemyTotal;
 
 var bool ShowTotal;
 var bool ShowActive;
 var bool ShowRemaining;
+var bool ShowInitialTotal;
 var bool SkipTurrets;
 
 var int LastRealizedIndex;
@@ -18,6 +20,7 @@ event OnInit(UIScreen Screen)
 	ShowTotal = ShouldDrawTotalCount();
 	ShowActive = ShouldDrawActiveCount();
 	ShowRemaining = ShouldDrawRemainingCount();
+	ShowInitialTotal = ShouldShowInitialTotal();
 	SkipTurrets = ShouldSkipTurrets();
 
 	RegisterEvents();
@@ -113,7 +116,7 @@ function DestroyUI()
 
 function UpdateUI()
 {
-	local int killed, total, active;
+	local int killed, total, active, initial;
 	local KillCounter_UI ui;
 	
 	ui = GetUI(); 
@@ -125,8 +128,13 @@ function UpdateUI()
 	killed = class'KillCounter_Utils'.static.GetKilledEnemies(SkipTurrets);
 	active = ShowActive ? class'KillCounter_Utils'.static.GetActiveEnemies(SkipTurrets) : -1;
 	total = ShowTotal ? class'KillCounter_Utils'.static.GetTotalEnemies(SkipTurrets) : -1;
+	initial = ShowInitialTotal ? class'KillCounter_Utils'.static.GetInitialEnemyCount(SkipTurrets) : -1;
 
-	ui.UpdateText(killed, total, active, ShowRemaining);
+	if(initial == 0 && !)
+	{
+	}
+
+	ui.UpdateText(killed, total, active, initial, ShowRemaining);
 
 	LastRealizedIndex = `XCOMHISTORY.GetCurrentHistoryIndex();
 }
@@ -158,6 +166,11 @@ function bool ShouldDrawRemainingCount()
 function bool ShouldSkipTurrets()
 {
 	return !includeTurrets;
+}
+
+function bool ShouldShowInitialTotal()
+{
+	return onlyShowInitialEnemyTotal;
 }
 
 defaultproperties

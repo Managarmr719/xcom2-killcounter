@@ -34,7 +34,7 @@ simulated function UIPanel InitPanel(optional name InitName, optional name InitL
 	return self;
 }
 
-function UpdateText(int killed, int total, int active, bool showRemaining)
+function UpdateText(int killed, int total, int active, int initial, bool showRemaining)
 {
 	local string Value;
 
@@ -58,7 +58,14 @@ function UpdateText(int killed, int total, int active, bool showRemaining)
 		}
 		else
 		{
-			Value @= strTotal @ AddColor(total, eUIState_Bad);
+			if(initial != -1)
+			{
+				Value @= strTotal @ AddColor(initial, eUIState_Bad);
+			}
+			else
+			{
+				Value @= strTotal @ AddColor(total, eUIState_Bad);
+			}
 		}
 	}
 

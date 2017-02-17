@@ -8,6 +8,26 @@ static function bool IsShadowChamberBuild()
 	return XComHQ.GetFacilityByName('ShadowChamber') != none;
 }
 
+static function int GetInitialEnemyCount(bool skipTurrets)
+{
+	local XComGameState_HeadquartersXCom XComHQ;
+	local XComGameState_MissionSite MissionState;
+
+	local array<X2CharacterTemplate> UnitTemplatesThatWillSpawn;
+	local int initialCount;
+
+	XComHQ = XComGameState_HeadquartersXCom(`XCOMHISTORY.GetSingleGameStateObjectForClass(class'XComGameState_HeadquartersXCom'));
+	MissionState = XComGameState_MissionSite(`XCOMHISTORY.GetGameStateForObjectID(XComHQ.MissionRef.ObjectID));
+
+	if(MissionState != none)
+	{
+		MissionState.GetShadowChamberMissionInfo(initialCount, UnitTemplatesThatWillSpawn);
+		return initialCount;
+	}
+
+	return GetTotalEnemies(skipTurrets);
+}
+
 static function int GetTotalEnemies(bool skipTurrets)
 {
 	local int iTotal, iPrevSeen, iPrevKilled;
