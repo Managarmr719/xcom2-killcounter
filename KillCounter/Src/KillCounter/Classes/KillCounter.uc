@@ -5,9 +5,10 @@ var array<int> AlreadySeenIndexes;
 
 event OnInit(UIScreen Screen)
 {	
-	LastRealizedIndex = default.LastRealizedIndex;
+	LastRealizedIndex = -1;
 	AlreadySeenIndexes.Length = 0;
 
+	class'KillCounter_Utils'.static.GetUI();
 	RegisterEvents();
 }
 
