@@ -50,7 +50,7 @@ function UpdateSettings(KillCounter_Settings newSettings)
 	self.SetPosition(settings.OffsetX, settings.OffsetY);
 	TextStyle.Alignment = Settings.textAlignment;
 
-	Update(, True);
+	self.Update();
 }
 
 function Update(optional int historyIndex = LastIndex, optional bool settingsChanged = False)
